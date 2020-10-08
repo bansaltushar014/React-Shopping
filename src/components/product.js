@@ -1,33 +1,38 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import formatCurrency from '../helper/currency';
 
 function Product(props) {
 
-    const productData = props.data.products;
-    return (
-        <div>
-            {
-                productData.map((item, index) => {
-                    return <div key={index}>
+    useEffect(() =>{
+        console.log(props.data);
+    }) 
 
-                            <div class="card"  style={{ maxWidth: 300 }}>
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" style={{ maxWidth: 250 }} src={item.image}/>
+    const productData = props.data;
+    let data = [];
+    return (
+        <div class="row">
+            { productData &&
+                productData.map((item, index) => {
+                    return <div class="col s12 m4">
+                        <div key={index}>
+                            <div class="card" style={{ maxWidth: 300 }}>
+                                <div class="card-image waves-effect waves-block waves-light">
+                                    <img class="activator" style={{ maxWidth: 350 }} src={item.image} />
                                 </div>
                                 <div class="card-content">
-                                    <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                                    <p><a href="#"> {item.price}</a></p>
+                                    <h6 class="card-title activator grey-text text-darken-4">  {item.title}<i class="material-icons right">more_vert</i></h6>
+                                    <p><a href="#">{formatCurrency(item.price)}</a></p>
                                 </div>
                                 <div class="card-reveal">
-                                    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                                    <h6 class="card-title grey-text text-darken-4">{item.title}<i class="material-icons right">close</i></h6>
+                                    <p>{item.description}</p>
                                 </div>
                             </div>
-
-                            {/* {item.price}
-                            <img src={item.image} alt="" /> */}
                         </div>
+
+                    </div>
                 })
-        }
+            }
         </div>
     );
 }
