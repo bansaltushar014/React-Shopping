@@ -1,30 +1,32 @@
 import React, {useEffect, useState} from 'react';
 import formatCurrency from '../helper/currency';
 import Fade from 'react-reveal/Fade';
+import { connect } from "react-redux";
+import { fetchProducts, getAddtoCardId } from "../actions/productActions";
 
-function Product(props) {
+function Product(Products) {
 
-    
-    const productData = props.data;
-    let data = [];
+    const productData = Products.Products;
 
     useEffect(() =>{
-        console.log(props.data);
+        // Invoke the Fetch product on first call
+        Products.fetchProducts();
+    },[]) 
+
+    useEffect(() =>{
+        console.log(Products);     
     }) 
 
-   
-  
     return (
         <div class="row">
             { productData &&
                 productData.map((item, index) => {
-                    return <div class="col s12 m4">
+                    return <div key={index} class="col s12 m4">
                         <Fade top cascade>
-                        <div key={index}>
+                        <div>
                             <div class="card" style={{ maxWidth: 300 }}>
                                 <div class="card-image waves-effect waves-block waves-light">
-                                    <img class="activator" style={{ maxWidth: 350 }} src={item.image} />
-                                    
+                                    <img class="activator" style={{ maxWidth: 350 }} src={item.image} />    
                                 </div>
                                 <div class="card-content">
                                     <h6 class="card-title activator grey-text text-darken-4">  {item.title}<i class="material-icons right">more_vert</i></h6>
@@ -33,7 +35,14 @@ function Product(props) {
                                     <p><a href="#">{formatCurrency(item.price)}</a></p>
                                     </div>
                                     <div class="col s6">
-                                    <a class="btn-floating btn-large waves-effect waves-light green"><i onClick={() => props.getAddtoCardId(item._id)} class="material-icons">add</i></a>
+                                    <a class="btn-floating btn-large waves-effect waves-light green">
+                                        <i  onClick={() =>
+                                                Products.getAddtoCardId(Products.Products, Products.CartData, item._id)
+                                            } 
+                                            class="material-icons">
+                                            add
+                                        </i>
+                                    </a>
                                     </div>
                                     </div>
         
@@ -49,12 +58,13 @@ function Product(props) {
                   
                 })
             }
-    
         </div>
-
-
-
     );
 }
 
-export default Product;
+// HOW? why it is written as state.products.filteredItems instead of state.filteredItems 
+// I think it is to make something like this state= {products : {filteredItems: "", cartItems: ""}}
+export default connect((state) => ({
+    Products: state.products.filteredItems, 
+    CartData: state.products.cartItems
+}), {fetchProducts, getAddtoCardId})(Product);
