@@ -39,7 +39,6 @@ export const productsReducer = (state = {}, action) =>{
              items: action.payload,
              filteredItems: action.payload,
              cartItems: data
-
             };
         default:
           return state;

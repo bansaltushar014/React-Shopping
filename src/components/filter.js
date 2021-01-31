@@ -55,7 +55,6 @@ class Filter extends Component {
     }
 }
 
-// HOW? 
 export default connect(
     (state) => ({
       size: state.products.size,

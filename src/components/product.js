@@ -62,8 +62,6 @@ function Product(Products) {
     );
 }
 
-// HOW? why it is written as state.products.filteredItems instead of state.filteredItems 
-// I think it is to make something like this state= {products : {filteredItems: "", cartItems: ""}}
 export default connect((state) => ({
     Products: state.products.filteredItems, 
     CartData: state.products.cartItems
